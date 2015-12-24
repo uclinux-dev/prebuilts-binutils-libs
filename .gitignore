@@ -1,0 +1,6 @@
+# Where we save archives.
+/distdir/
+# Where we compile code.
+/workdir/
+# Where we unpack the code.
+/binutils-*/

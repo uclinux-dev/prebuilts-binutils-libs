@@ -1,0 +1,16 @@
+# elf2flt binutils prebuilts
+
+This repo holds prebuilt binutils for use with the elf2flt project.  Only the
+files needed for elf2flt are saved here.  These should not be used for anything
+else.
+
+## Usage
+
+When building elf2flt, simply point the configure script to this repo:
+
+`./configure --with-binutils-build-dir=.../prebuilts-binutils-libs/output/2.25.1/ ...`
+
+## Building
+
+The prebuilts in here were created with the build.sh script.  For more details,
+see that file.
