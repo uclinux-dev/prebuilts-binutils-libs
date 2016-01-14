@@ -26,6 +26,7 @@ ARCHES=(
 	sh
 	sparc
 	v850
+	xtensa
 )
 TARGETS=${ARCHES[@]/%/-elf}
 
@@ -74,12 +75,12 @@ build() {
 	cp \
 		"${S}"/include/{ansidecl,filenames,hashtab,libiberty,symcat}.h \
 		"${VD}"/include/
-	cp "${S}"/include/elf/{bfin,h8,microblaze,reloc-macros}.h "${VD}"/include/elf/
+	cp "${S}"/include/elf/{bfin,h8,microblaze,reloc-macros,xtensa}.h "${VD}"/include/elf/
 	ln -s ../${PV}/include "${D}"/include
 	popd >/dev/null
 }
 
-# Build binutils for multiple targets
+# Build binutils for multiple targets.
 build_multi() {
 	local PV="$1"
 	local P="${PN}-${PV}"
@@ -102,7 +103,7 @@ build_multi() {
 	cp \
 		"${S}"/include/{ansidecl,filenames,hashtab,libiberty,symcat}.h \
 		"${D}"/include/
-	cp "${S}"/include/elf/{bfin,h8,microblaze,reloc-macros,v850}.h "${D}"/include/elf/
+	cp "${S}"/include/elf/{bfin,h8,microblaze,reloc-macros,v850,xtensa}.h "${D}"/include/elf/
 	popd >/dev/null
 }
 
