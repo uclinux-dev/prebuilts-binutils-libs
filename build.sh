@@ -75,7 +75,7 @@ build() {
 	cp \
 		"${S}"/include/{ansidecl,filenames,hashtab,libiberty,symcat}.h \
 		"${VD}"/include/
-	cp "${S}"/include/elf/{bfin,h8,microblaze,reloc-macros,xtensa}.h "${VD}"/include/elf/
+	cp "${S}"/include/elf/{arm,bfin,h8,m68k,microblaze,nios2,reloc-macros,sh,sparc,v850,xtensa}.h "${VD}"/include/elf/
 	ln -s ../${PV}/include "${D}"/include
 	popd >/dev/null
 }
