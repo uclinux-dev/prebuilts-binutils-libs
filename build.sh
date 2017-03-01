@@ -4,7 +4,7 @@
 set -e
 
 # The version of binutils we use.
-PV="2.25.1"
+PV="2.26.1"
 PN="binutils"
 P="${PN}-${PV}"
 # Where to get the source.
@@ -103,7 +103,7 @@ build_multi() {
 	cp \
 		"${S}"/include/{ansidecl,filenames,hashtab,libiberty,symcat}.h \
 		"${D}"/include/
-	cp "${S}"/include/elf/{bfin,h8,microblaze,reloc-macros,v850,xtensa}.h "${D}"/include/elf/
+	cp "${S}"/include/elf/{arm,bfin,h8,m68k,microblaze,nios2,reloc-macros,sh,sparc,v850,xtensa}.h "${D}"/include/elf/
 	popd >/dev/null
 }
 
@@ -145,7 +145,7 @@ main() {
 	# Old logic for building one target at a time.
 	local arch
 	for arch in "${ARCHES[@]}"; do
-		build 2.25.1 ${arch}
+		build ${PV} ${arch}
 	done
 }
 main "$@"

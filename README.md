@@ -8,7 +8,7 @@ else.
 
 When building elf2flt, simply point the configure script to this repo:
 
-`./configure --with-binutils-build-dir=.../prebuilts-binutils-libs/output/2.25.1/ ...`
+`./configure --with-binutils-build-dir=.../prebuilts-binutils-libs/output/2.26.1/ ...`
 
 ## Building
 
