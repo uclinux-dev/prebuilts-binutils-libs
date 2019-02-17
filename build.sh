@@ -47,6 +47,22 @@ run_compile() {
 	make all-{libiberty,bfd} -j${NCPUS} "$@" >& make.log
 }
 
+# Install headers & libs.
+# run_install <source> <dest install path>
+run_install() {
+	local S="$1"
+	local D="$2"
+
+	rm -rf "${D}"
+	mkdir -p "${D}"/{bfd,include/elf,libiberty}
+	cp bfd/bfd.h bfd/libbfd.a "${D}"/bfd/
+	cp libiberty/libiberty.a "${D}"/libiberty/
+	cp \
+		"${S}"/include/{ansidecl,filenames,hashtab,libiberty,symcat}.h \
+		"${D}"/include/
+	cp "${S}"/include/elf/{arm,bfin,h8,m68k,microblaze,nios2,reloc-macros,sh,sparc,v850,xtensa}.h "${D}"/include/elf/
+}
+
 # Build binutils for a single target.
 # build <version> <arch> [tuple]
 build() {
@@ -65,22 +81,25 @@ build() {
 	pushd "${WORKDIR}" >/dev/null
 	run_configure --target="${CTARGET}" || return
 	run_compile || return
-	# Install everything.
-	rm -rf "${D}"
-	mkdir -p "${D}"/{bfd,libiberty} "${VD}"/{bfd,include/elf}
-	cp bfd/libbfd.a "${D}"/bfd/
-	cp bfd/bfd.h "${VD}"/bfd/
-	ln -s ../../${PV}/bfd/bfd.h "${D}"/bfd/bfd.h
-	cp libiberty/libiberty.a "${D}"/libiberty/
-	cp \
-		"${S}"/include/{ansidecl,filenames,hashtab,libiberty,symcat}.h \
-		"${VD}"/include/
-	cp "${S}"/include/elf/{arm,bfin,h8,m68k,microblaze,nios2,reloc-macros,sh,sparc,v850,xtensa}.h "${VD}"/include/elf/
+
+	# Install everything to the arch dir.
+	run_install "${S}" "${D}"
+	# Move the headers over to the common dir.
+	mkdir -p "${VD}"/{bfd,include}
+	mv "${D}"/bfd/*.h "${VD}"/bfd/
+	local f
+	for f in "${D}"/bfd/*.h; do
+		ln -sf ../../${PV}/bfd/${f##*/} "${D}"/bfd/
+	done
+	cp -pPR "${D}"/include/* "${VD}"/include/
+	rm -rf "${D}"/include
 	ln -s ../${PV}/include "${D}"/include
+
 	popd >/dev/null
 }
 
 # Build binutils for multiple targets.
+# build_multi <version> [targets]
 build_multi() {
 	local PV="$1"
 	local P="${PN}-${PV}"
@@ -96,14 +115,7 @@ build_multi() {
 	run_configure --enable-targets="$*" || return
 	run_compile || return
 	# Install everything.
-	rm -rf "${D}"
-	mkdir -p "${D}"/{bfd,include/elf,libiberty}
-	cp bfd/bfd.h bfd/libbfd.a "${D}"/bfd/
-	cp libiberty/libiberty.a "${D}"/libiberty/
-	cp \
-		"${S}"/include/{ansidecl,filenames,hashtab,libiberty,symcat}.h \
-		"${D}"/include/
-	cp "${S}"/include/elf/{arm,bfin,h8,m68k,microblaze,nios2,reloc-macros,sh,sparc,v850,xtensa}.h "${D}"/include/elf/
+	run_install "${S}" "${D}"
 	popd >/dev/null
 }
 
