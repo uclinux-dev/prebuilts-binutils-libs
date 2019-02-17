@@ -56,10 +56,18 @@ run_install() {
 	rm -rf "${D}"
 	mkdir -p "${D}"/{bfd,include/elf,libiberty}
 	cp bfd/bfd.h bfd/libbfd.a "${D}"/bfd/
+	if [[ -e bfd/bfd_stdint.h ]]; then
+		# Binutils 2.32+ includes this header.
+		cp bfd/bfd_stdint.h "${D}"/bfd/
+	fi
 	cp libiberty/libiberty.a "${D}"/libiberty/
 	cp \
 		"${S}"/include/{ansidecl,filenames,hashtab,libiberty,symcat}.h \
 		"${D}"/include/
+	if [[ -e "${S}"/include/diagnostics.h ]]; then
+		# Binutils 2.31+ includes this header.
+		cp "${S}"/include/diagnostics.h "${D}"/include/
+	fi
 	cp "${S}"/include/elf/{arm,bfin,h8,m68k,microblaze,nios2,reloc-macros,sh,sparc,v850,xtensa}.h "${D}"/include/elf/
 }
 
