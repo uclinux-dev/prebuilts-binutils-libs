@@ -1,5 +1,5 @@
-# Where we save archives.
-/distdir/
+# Where we save archives.  A directory or symlink.
+/distdir
 # Where we compile code.
 /workdir/
 # Where we unpack the code.
