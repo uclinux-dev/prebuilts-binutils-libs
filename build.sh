@@ -4,7 +4,7 @@
 set -e
 
 # The version of binutils we use.
-PV="2.26.1"
+PV="2.31.1"
 PN="binutils"
 P="${PN}-${PV}"
 # Where to get the source.
